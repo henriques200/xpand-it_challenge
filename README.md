@@ -1,2 +1,2 @@
-# xpand-it_challenge
+# XpandIT Challenge
 XpandIT Challenge

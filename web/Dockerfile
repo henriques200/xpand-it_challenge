@@ -24,7 +24,9 @@ RUN sed -i 's/port="8080"/port="4041"/' server.xml
 
 # Webapp deployment
 WORKDIR /opt/tomcat/webapps
+RUN rm -rf ROOT/
 RUN curl -O -L https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/sample.war 
+RUN mv sample.war ROOT.war
 
 # Test port (not final)
 EXPOSE 8080

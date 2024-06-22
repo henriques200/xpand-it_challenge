@@ -8,8 +8,7 @@ LABEL version="1.0" description="xpandit_challenge/Development"
 # Get required packages
 RUN yum update -y
 RUN yum install epel-release -y
-RUN yum install nano wget tar -y
-RUN yum install java-1.8.0-openjdk-devel -y
+RUN yum install java-1.8.0-openjdk-devel wget tar -y
 
 # Tomcat instalation
 RUN mkdir /opt/tomcat

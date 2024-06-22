@@ -18,19 +18,22 @@ RUN wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.100/bin/apache-tomcat-8.5
 RUN tar xvf apache-tomcat-8.5.100.tar.gz -C /opt/tomcat --strip-components=1
 RUN rm apache-tomcat-8.5.100.tar.gz
 
-# Tomcat config
-WORKDIR /opt/tomcat/conf
-RUN sed -i 's/port="8080"/port="4041"/' server.xml
-
 # Webapp deployment
 WORKDIR /opt/tomcat/webapps
 RUN rm -rf ROOT/
 RUN curl -O -L https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/sample.war 
 RUN mv sample.war ROOT.war
 
-# Test port (not final)
-EXPOSE 8080
-EXPOSE 8009
+# Certs instalation
+COPY certs/server.crt /etc/ssl/server.crt
+COPY certs/server.key /etc/ssl/server.key
+COPY certs/keystore.p12 /etc/ssl/keystore.p12
+RUN sed -i '/<\/Service>/i <Connector protocol="org.apache.coyote.http11.Http11NioProtocol" port="4041" \
+    maxThreads="200" scheme="https" secure="true" \
+    SSLEnabled="true" keystoreFile="/etc/ssl/keystore.p12" keystorePass="Passw0rd" \
+    keystoreType="PKCS12" clientAuth="false" sslProtocol="TLS"/>' /opt/tomcat/conf/server.xml
+
+# web (ssl) port
 EXPOSE 4041
 
 # Run Tomcat

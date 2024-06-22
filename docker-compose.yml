@@ -1,0 +1,9 @@
+services:
+  web:
+    container_name: tomcat_server
+    build: ./web
+    restart: always
+    ports:
+      - 8080:8080
+      - 8009:8009
+      - 4041:4041
